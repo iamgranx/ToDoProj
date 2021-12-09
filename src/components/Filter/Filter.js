@@ -1,7 +1,11 @@
 import Button from "../Button";
 import { ButtonStyle } from "../Button/Button.styles";
 import { ButtonsGroup, FilterWrapper, SearchBlock } from "./Filter.styles";
+import Input from "../Input";
 
+// handleAllClick => this.props.onClick('all')
+// handleDoneClick => this.props.onClick('done')
+// handleDeletedClick => this.props.onClick('deleted')
 
 const Filter = () => {
     return(
@@ -9,8 +13,11 @@ const Filter = () => {
         <section>
           <FilterWrapper>
             <SearchBlock>
-                <label htmlFor="search">Поиск по названию</label>
-                <input id="search" placeholder="Начни вводить" />
+            <Input
+              label="Поиск по названию"
+              id="search"
+              placeholder="Начни вводить"
+            />
             </SearchBlock>
 
             <ButtonsGroup>

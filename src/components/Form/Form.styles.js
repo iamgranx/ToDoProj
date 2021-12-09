@@ -7,3 +7,4 @@ export const NewTaskWrapper = styled.form`
         gap: 5px;
 
 `;
+ 

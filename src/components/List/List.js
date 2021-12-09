@@ -1,11 +1,23 @@
+import React from "react";
 import ListItem from "../ListItem/ListItem";
 
 
-const List = () => {
+
+const List = ({ list, onDone, onDelete }) => {
+    const todoItems = list.map (({ id, name, done }) => (
+        <ListItem 
+        key={id}
+        name={name} 
+        done={done} 
+        id={id} 
+        onDone={onDone} 
+        onDelete={onDelete} />
+    ));
+
     return (
         <section>
             <ul>
-                <ListItem />
+                {todoItems}
             </ul>
         </section>
     )
