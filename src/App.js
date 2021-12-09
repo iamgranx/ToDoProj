@@ -6,20 +6,39 @@ import Form from "./components/Form";
 import List from "./components/List";
 import Filter from "./components/Filter";
 import { AppWrapper } from "./App.styles";
+import { render } from "@testing-library/react";
+
+// const skeletonTodo = {
+//   id: uuidv4(),
+//   name: "some todo",
+//   done: false,
+// };
 
 class App extends React.Component {
 
   state ={ 
     filterStatus: "all",
     filterValue: "",
-    todoList: [],
-    deletedTodo: [],
+    todoList: [], //[skeletonTodo]
+    deletedTodoList: [],
   };
   handleCreateTodo = (name) => {
     this.setState({
-      todoList: this.state.todoList.concat({ name, done: false, id: uuidv4() }),
+      todoList: this.state.todoList.concat({ 
+        name,
+        done: false, 
+        id: uuidv4() 
+      }),
     });
   };
+
+  tasksNumbers = () => {
+      return (
+        <div>
+        Колличество записей {this.state.todoList.length} 
+        </div>
+      )
+    }
 
   handleDone = (id) => {
     this.setState((state) => ({
@@ -52,7 +71,7 @@ class App extends React.Component {
     return (
       <AppWrapper>
         <div>
-          <Header />
+          <Header numbers={this.tasksNumbers} />
           {todoList.length > 0 && (
             <>
             <Filter />

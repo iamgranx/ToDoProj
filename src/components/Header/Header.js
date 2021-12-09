@@ -1,10 +1,10 @@
-import { Head, P } from "./Header.styles";
+import { Head } from "./Header.styles";
 
-const Header = () => {
+const Header = ({numbers}) => {
   return (
     <Head>
       <h1 className="title">Todo list</h1>
-      <P>Количество записей 10</P>
+      {numbers}
     </Head>
   );
 };
