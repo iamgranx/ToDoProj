@@ -13,7 +13,7 @@ const ListItem = ({ name, id, done, onDone, onDelete }) => {
     const handleDone = () => {
         onDone(id)
     };
-    
+    console.log(onDone)
 
     return (
         <li>
@@ -21,7 +21,7 @@ const ListItem = ({ name, id, done, onDone, onDelete }) => {
             <div>
                 <TasksButtons>
                     {!done && (
-                    <Button type="button" title="Выполнено" onclick={handleDone} />
+                    <Button type="button" title="Выполнено" onClick={handleDone} />
 
                     )}
                     

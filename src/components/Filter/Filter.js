@@ -7,7 +7,7 @@ import Input from "../Input";
 // handleDoneClick => this.props.onClick('done')
 // handleDeletedClick => this.props.onClick('deleted')
 
-const Filter = () => {
+const Filter = ({ handleAllClick, handleDoneClick, handleDeletedClick, handleActiveClick }) => {
     return(
       
         <section>
@@ -21,9 +21,11 @@ const Filter = () => {
             </SearchBlock>
 
             <ButtonsGroup>
-              <Button type="button" title="Все" />
-              <Button type="button" title="Выполненные" />
-              <Button type="button" title="Удаленные" />
+              <Button onClick={handleAllClick} type="button" title="Все" />
+              <Button onClick={handleActiveClick} type="button" title="Активные" />
+              <Button onClick={handleDoneClick} type="button" title="Выполненные" />
+              <Button onClick={handleDeletedClick} type="button" title="Удаленные" />
+              
             </ButtonsGroup>
 
           </FilterWrapper>

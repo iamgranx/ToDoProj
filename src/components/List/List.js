@@ -3,8 +3,8 @@ import ListItem from "../ListItem/ListItem";
 
 
 
-const List = ({ list, onDone, onDelete }) => {
-    const todoItems = list.map (({ id, name, done }) => (
+const List = ({ list, onDone, onDelete, filterStatus }) => {
+    const todoItems = list.filter((list) => list.done === false).map (({ id, name, done }) => (
         <ListItem 
         key={id}
         name={name} 
