@@ -1,5 +1,4 @@
 import Button from "../Button";
-import { ButtonStyle } from "../Button/Button.styles";
 import { ButtonsGroup, FilterWrapper, SearchBlock } from "./Filter.styles";
 import Input from "../Input";
 

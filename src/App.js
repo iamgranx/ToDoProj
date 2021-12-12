@@ -1,6 +1,7 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
+// import ListItem from "../ListItem/ListItem";
 import Header from "./components/Header";
 import Form from "./components/Form";
 import List from "./components/List";
@@ -34,19 +35,23 @@ class App extends React.Component {
     return <div>Колличество записей {this.state.todoList.length}</div>;
   };
 
-  getFilteredList = () => {
-    // if (this.state.filterStatus === "active") {
-    //   return this.state.done === false;
-    // }
+  getFilteredList = (filterList, id, name, done) => {
+    if (this.state.filterStatus === "active") {
+      return this.state.todoList
+        .filter((todoList) => todoList.done === false)
+        .map(({ id, name, done }) => ({ filterList }));
+    }
     if (this.state.filterStatus === "done") {
-      return this.state.todoList;
+      return this.state.todoList.map(({ id, name, done }) => ({ filterList }));
     }
     if (this.state.filterStatus === "deleted") {
-      return this.state.deletedTodoList;
+      return this.state.deletedTodoList.map(({ id, name, done }) => ({
+        filterList
+      }));
     }
-    // if (this.state.filterStatus === "all") {
-    //   return true;
-    // }
+    if (this.state.filterStatus === "all") {
+      return this.state.map(({ id, name, done }) => ({ filterList }));
+    }
   };
 
   getStatusActive = () => {
