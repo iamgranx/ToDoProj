@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const TasksButtons = styled.div`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 20px;
 `;

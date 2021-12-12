@@ -14,64 +14,60 @@ import { AppWrapper } from "./App.styles";
 // };
 
 class App extends React.Component {
-
-  state ={ 
-    filterStatus: "all",
+  state = {
+    filterStatus: "active",
     filterValue: "",
     todoList: [], //[skeletonTodo]
-    deletedTodoList: [],
+    deletedTodoList: []
   };
   handleCreateTodo = (name) => {
     this.setState({
-      todoList: this.state.todoList.concat({ 
+      todoList: this.state.todoList.concat({
         name,
-        done: false, 
-        id: uuidv4() 
-      }),
+        done: false,
+        id: uuidv4()
+      })
     });
   };
 
   tasksNumbers = () => {
-      return (
-        <div>
-        Колличество записей {this.state.todoList.length} 
-        </div>
-      )
-    }
-  
-    getFilteredList = () => {
-      if(this.state.filterStatus ==="active") {
-        return this.state.done === false
-      }
-      if(this.state.filterStatus === "done") {
-        return this.state.todoList
-      } if(this.state.filterStatus === "deleted") {
-        return this.state.deletedTodoList
-      } if(this.state.filterStatus === "all") {
-        return true
-      }
-    };
+    return <div>Колличество записей {this.state.todoList.length}</div>;
+  };
 
-    getStatusActive = () => {
-      this.setState.Filter({Filter: "active"})
+  getFilteredList = () => {
+    // if (this.state.filterStatus === "active") {
+    //   return this.state.done === false;
+    // }
+    if (this.state.filterStatus === "done") {
+      return this.state.todoList;
     }
-    getStatusAll = () => {
-      this.setState.Filter({Filter: "all"})
+    if (this.state.filterStatus === "deleted") {
+      return this.state.deletedTodoList;
     }
-    getStatusDone = () => {
-      this.setState.Filter({Filter: "done"})
-    }
-    getStatuDeleted = () => {
-      this.setState.Filter({Filter: "deleted"})
-    }
+    // if (this.state.filterStatus === "all") {
+    //   return true;
+    // }
+  };
+
+  getStatusActive = () => {
+    this.setState({ filterStatus: "active" });
+  };
+  getStatusAll = () => {
+    this.setState({ filterStatus: "all" });
+  };
+  getStatusDone = () => {
+    this.setState({ filterStatus: "done" });
+  };
+  getStatuDeleted = () => {
+    this.setState({ filterStatus: "deleted" });
+  };
 
   handleDone = (id) => {
     this.setState((state) => ({
       todoList: state.todoList.map((todo) =>
         todo.id === id ? { ...todo, done: true } : todo
-      ),
+      )
     }));
-    console.log('123')
   };
 
   handleDelete = (id) => {
@@ -84,15 +80,13 @@ class App extends React.Component {
 
       return {
         todoList: [...state.todoList],
-        deletedTodoList: state.deletedTodoList.concat(deletedTodo),
+        deletedTodoList: state.deletedTodoList.concat(deletedTodo)
       };
     });
   };
 
-
-  render () {
+  render() {
     const { todoList } = this.state;
-
 
     return (
       <AppWrapper>
@@ -100,22 +94,26 @@ class App extends React.Component {
           <Header numbers={this.tasksNumbers()} />
           {todoList.length > 0 && (
             <>
-            <Filter />
+              <Filter
+                handleActiveClick={this.getStatusActive}
+                handleAllClick={this.getStatusAll}
+                handleDeletedClick={this.getStatuDeleted}
+                handleDoneClick={this.getStatusDone}
+              />
             </>
-          )
-          }
+          )}
 
-          <List list={todoList}
-          onDone={this.handleDone}
-            onDelete={this.handleDelete}/>
+          <List
+            list={todoList}
+            onDone={this.handleDone}
+            onDelete={this.handleDelete}
+            filterStatus={this.getFilteredList}
+          />
           <Form onCreateTodo={this.handleCreateTodo} />
-        </div>      
+        </div>
       </AppWrapper>
-      
     );
-
   }
- 
 }
 
 export default App;
