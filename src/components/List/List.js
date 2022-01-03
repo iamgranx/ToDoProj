@@ -1,10 +1,11 @@
 import React from "react";
 import ListItem from "../ListItem/ListItem";
+import { memo } from "react";
 
 
 
 const List = ({ list, onDone, onDelete, filterStatus }) => {
-    const todoItems = list.filter((list) => list.done === false).map (({ id, name, done }) => (
+    const todoItems = filterStatus(list).map(({ id, name, done }) => (
         <ListItem 
         key={id}
         name={name} 
@@ -23,4 +24,4 @@ const List = ({ list, onDone, onDelete, filterStatus }) => {
     )
 }
 
-export default List;
+export default memo(List);

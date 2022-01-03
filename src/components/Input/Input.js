@@ -1,4 +1,5 @@
 import React from "react";
+import { memo } from "react";
 
 import { InputWrapper } from "./Input.styles";
 
@@ -13,4 +14,4 @@ const Input = ({ label, error, description,  ...inputProps}) => {
     );
 };
 
-export default Input;  
+export default memo(Input);  

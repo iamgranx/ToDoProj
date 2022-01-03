@@ -1,5 +1,6 @@
 
 import { ButtonStyle } from "./Button.styles";
+import { memo } from "react";
 
 
 
@@ -14,4 +15,4 @@ const Button = ({onClick, title, type}) => {
     );
 };
 
-export default Button;
+export default memo(Button);

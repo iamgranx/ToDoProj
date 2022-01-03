@@ -1,4 +1,5 @@
-import React from "react";
+import React  from "react";
+import { useState, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 // import ListItem from "../ListItem/ListItem";
@@ -14,111 +15,114 @@ import { AppWrapper } from "./App.styles";
 //   done: false,
 // };
 
-class App extends React.Component {
-  state = {
-    filterStatus: "active",
-    filterValue: "",
-    todoList: [], //[skeletonTodo]
-    deletedTodoList: []
-  };
-  handleCreateTodo = (name) => {
-    this.setState({
-      todoList: this.state.todoList.concat({
-        name,
-        done: false,
-        id: uuidv4()
-      })
-    });
-  };
+const App = () => {
+  const [filterStatus, setFilterStatus] = useState('active');
+  const [filterValue, setFilterValue] = useState('');
+  const [todoList, setTodoList] = useState([]);
+  const [deletedTodoList, setDeletedTodoList] = useState([]);
+  
 
-  tasksNumbers = () => {
-    return <div>Колличество записей {this.state.todoList.length}</div>;
-  };
+  // state = {
+  //   filterStatus: "active",
+  //   filterValue: "",
+  //   todoList: [], //[skeletonTodo]
+  //   deletedTodoList: []
+//  }
 
-  getFilteredList = (filterList, id, name, done) => {
-    if (this.state.filterStatus === "active") {
-      return this.state.todoList
-        .filter((todoList) => todoList.done === false)
-        .map(({ id, name, done }) => ({ filterList }));
+  const handleCreateTodo = useCallback((name) => setTodoList((prevTodoList) => ([...prevTodoList, { name, done: false, id: uuidv4() }]),[]))
+  // (name) => {
+  //   setTodoList([...todoList, { name, done: false, id: uuidv4() }])
+  // };
+  //   this.setState({
+  //     todoList: this.state.todoList.concat({
+  //       name,
+  //       done: false,
+  //       id: uuidv4()
+  //     })
+  //   });
+  // };
+
+ const getFilteredList = () => {
+    if (filterStatus === "active") {
+      return todoList.filter((todoList) => todoList.done === false);
     }
-    if (this.state.filterStatus === "done") {
-      return this.state.todoList.map(({ id, name, done }) => ({ filterList }));
+    if (filterStatus === "done") {
+      return todoList.filter((todoList) => todoList.done === true);
     }
-    if (this.state.filterStatus === "deleted") {
-      return this.state.deletedTodoList.map(({ id, name, done }) => ({
-        filterList
-      }));
+    if (filterStatus === "deleted") {
+      return deletedTodoList;
     }
-    if (this.state.filterStatus === "all") {
-      return this.state.map(({ id, name, done }) => ({ filterList }));
+    if (filterStatus === "all") {
+      return todoList;
     }
   };
 
-  getStatusActive = () => {
-    this.setState({ filterStatus: "active" });
-  };
-  getStatusAll = () => {
-    this.setState({ filterStatus: "all" });
-  };
-  getStatusDone = () => {
-    this.setState({ filterStatus: "done" });
-  };
-  getStatuDeleted = () => {
-    this.setState({ filterStatus: "deleted" });
+ const getStatusActive = useCallback(() => setFilterStatus((prevFilterStatus) => prevFilterStatus = "active"), []);
+ const getStatusAll = useCallback(() => setFilterStatus((prevFilterStatus) => prevFilterStatus = "all"), []);
+ const getStatusDone = useCallback(() => setFilterStatus((prevFilterStatus) => prevFilterStatus = "done"), []);
+ const getStatuDeleted = useCallback(() => setFilterStatus((prevFilterStatus) => prevFilterStatus = "deleted"), []);
+
+ const handleDone = (id) => {
+    setTodoList(todoList.map((todo) => 
+    todo.id === id ? {...todo, done: true} : todo))
+    // this.setState((state) => ({
+    //   todoList: state.todoList.map((todo) =>
+    //     todo.id === id ? { ...todo, done: true } : todo
+    //   )
+    // }));
   };
 
-  handleDone = (id) => {
-    this.setState((state) => ({
-      todoList: state.todoList.map((todo) =>
-        todo.id === id ? { ...todo, done: true } : todo
-      )
-    }));
+ const handleDelete = (id) => {
+    const deletedTodoIndex = todoList.findIndex((todo) => todo.id === id);
+    if(deletedTodoIndex < 0) {
+      return
+    }
+
+    const deletedTodo = todoList.splice(deletedTodoIndex, 1);
+    setTodoList([...todoList]);
+    setDeletedTodoList(deletedTodoList.concat(deletedTodo))
+  
+    // this.setState((state) => {
+    //   const deletedTodoIndex = state.todoList.findIndex(
+    //     (todo) => todo.id === id
+    //   );
+
+    //   const deletedTodo = state.todoList.splice(deletedTodoIndex, 1);
+
+    //   return {
+    //     todoList: [...state.todoList],
+    //     deletedTodoList: state.deletedTodoList.concat(deletedTodo)
+    //   };
+    // });
   };
 
-  handleDelete = (id) => {
-    this.setState((state) => {
-      const deletedTodoIndex = state.todoList.findIndex(
-        (todo) => todo.id === id
-      );
-
-      const deletedTodo = state.todoList.splice(deletedTodoIndex, 1);
-
-      return {
-        todoList: [...state.todoList],
-        deletedTodoList: state.deletedTodoList.concat(deletedTodo)
-      };
-    });
-  };
-
-  render() {
-    const { todoList } = this.state;
+  // render() {
+  //   const { todoList } = this.state;
 
     return (
       <AppWrapper>
         <div>
-          <Header numbers={this.tasksNumbers()} />
+          <Header numbers={<div>Колличество записей {todoList.length}</div>} />
           {todoList.length > 0 && (
             <>
               <Filter
-                handleActiveClick={this.getStatusActive}
-                handleAllClick={this.getStatusAll}
-                handleDeletedClick={this.getStatuDeleted}
-                handleDoneClick={this.getStatusDone}
+                handleActiveClick={getStatusActive}
+                handleAllClick={getStatusAll}
+                handleDeletedClick={getStatuDeleted}
+                handleDoneClick={getStatusDone}
               />
             </>
           )}
 
           <List
             list={todoList}
-            onDone={this.handleDone}
-            onDelete={this.handleDelete}
-            filterStatus={this.getFilteredList}
+            onDone={handleDone}
+            onDelete={handleDelete}
+            filterStatus={getFilteredList}
           />
-          <Form onCreateTodo={this.handleCreateTodo} />
+          <Form onCreateTodo={handleCreateTodo} />
         </div>
       </AppWrapper>
     );
-  }
-}
-
+  };
 export default App;
